@@ -6,36 +6,38 @@ A simple tutorial for developing a blockchain application from scratch in Python
 
 Please read the [step-by-step implementation tutorial](https://www.ibm.com/developerworks/cloud/library/cl-develop-blockchain-app-in-python/index.html) to get your answers :)
 
-## Instructions to run
+## Instructions to run (Mac環境で確認済み)
 
 Clone the project,
 
 ```sh
-$ git clone https://github.com/satwikkansal/python_blockchain_app.git
+$ git clone git@github.com:kenn721/blockchainA.git
 ```
 
-Install the dependencies,
+Docker環境の構築(Docker for Macの準備が必要　[参考](https://docs.docker.jp/docker-for-mac/install.html))
 
 ```sh
-$ cd python_blockchain_app
-$ pip install -r requirements.txt
+$ docker-compose build
 ```
 
-Start a blockchain node server,
-
+Start a blockchain node server, 
 ```sh
 # Windows users can follow this: https://flask.palletsprojects.com/en/1.1.x/cli/#application-discovery
-$ export FLASK_APP=node_server.py
-$ flask run --port 8000
-```
+$ docker-compose up -d
+``` 
 
 One instance of our blockchain node is now up and running at port 8000.
 
-
-Run the application on a different terminal session,
+Enter the container
 
 ```sh
-$ python run_app.py
+$ docker-compose exec flask bash
+```
+
+Run the application in the container,
+
+```sh
+$ docker-compose run --rm flask python run_app.py
 ```
 
 The application should be up and running at [http://localhost:5000](http://localhost:5000).
