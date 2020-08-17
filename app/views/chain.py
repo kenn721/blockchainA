@@ -2,7 +2,8 @@ import datetime
 import json
 
 import requests
-from flask import render_template, redirect, request
+from flask import render_template, redirect, request, session ,g
+from flask_jwt import jwt_required, current_identity, _jwt
 
 from app import app
 
@@ -11,7 +12,6 @@ from app import app
 CONNECTED_NODE_ADDRESS = "http://127.0.0.1:8000"
 
 posts = []
-
 
 def fetch_posts():
     """
@@ -33,7 +33,6 @@ def fetch_posts():
         posts = sorted(content, key=lambda k: k['timestamp'],
                        reverse=True)
 
-
 @app.route('/')
 def index():
     fetch_posts()
@@ -41,6 +40,7 @@ def index():
                            title='YourNet: Decentralized '
                                  'content sharing',
                            posts=posts,
+                           user=g.user,
                            node_address=CONNECTED_NODE_ADDRESS,
                            readable_time=timestamp_to_string)
 

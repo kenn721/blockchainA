@@ -1,43 +1,35 @@
-# python_blockchain_app
+# BlockChain 課題A
 
-A simple tutorial for developing a blockchain application from scratch in Python.
-
-## What is blockchain? How it is implemented? And how it works?
-
-Please read the [step-by-step implementation tutorial](https://www.ibm.com/developerworks/cloud/library/cl-develop-blockchain-app-in-python/index.html) to get your answers :)
+This is baased on [https://github.com/satwikkansal/python_blockchain_app](https://github.com/satwikkansal/python_blockchain_app)
 
 ## Instructions to run (Mac環境で確認済み)
 
-Clone the project,
+Clone the project, or Download as zip
 
 ```sh
 $ git clone git@github.com:kenn721/blockchainA.git
+$ cd blockchainA
 ```
 
 Docker環境の構築(Docker for Macの準備が必要　[参考](https://docs.docker.jp/docker-for-mac/install.html))
+開発サーバーでしかないので、取引データ、マイニングなどはサーバーをストップするたびにリセットされる
 
 ```sh
 $ docker-compose build
 ```
 
-Start a blockchain node server, 
+Dockerを起動して、blockchain node serverを開始する, 
 ```sh
-# Windows users can follow this: https://flask.palletsprojects.com/en/1.1.x/cli/#application-discovery
 $ docker-compose up -d
 ``` 
 
 One instance of our blockchain node is now up and running at port 8000.
 
-Enter the container
+起動したDockerコンテナに入り、 (/srcに入ります)アプリケーションサーバーを起動
 
 ```sh
 $ docker-compose exec flask bash
-```
-
-Run the application in the container,
-
-```sh
-$ docker-compose run --rm flask python run_app.py
+$ python run_app.py
 ```
 
 The application should be up and running at [http://localhost:5000](http://localhost:5000).
@@ -95,5 +87,3 @@ Once you do all this, you can run the application, create transactions (post mes
 $ curl -X GET http://localhost:8001/chain
 $ curl -X GET http://localhost:8002/chain
 ```
-
-*PS: For consulting, you can reach out to me via Codementor (use [this link](https://www.codementor.io/satwikkansal?partner=satwikkansal) for free 10$ credits).*

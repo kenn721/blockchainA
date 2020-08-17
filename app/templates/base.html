@@ -4,6 +4,12 @@
   </head>
   <body>
     <div><a href="/index">Home</a></div>
+    {% if not user %}
+    <div><a href="/login">Login</a></div>
+    <div><a href="/signup">Singup</a></div>
+    {% else %}
+    <div><a href="/logout">Logout</a></div>
+    {% endif %}
     <center><h1>{{ title }}</h1></center>
     <hr>
     {% with messages = get_flashed_messages() %}
