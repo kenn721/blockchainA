@@ -10,28 +10,24 @@ from app.models.users import User
 
 APP_ADDRESS = 'http://127.0.0.1:5000'
 
-users =  User.query.all()
-print(users)
-
-username_table = {u.username: u for u in users}
-userid_table = {u.id: u for u in users}
-
 @app.before_request
 def load_user():
     user_id = session.get('user_id')
     if user_id is None:
         g.user = None
+        g.token = None
     else:
-        g.user = userid_table.get(user_id, None)
+        g.user = User.query.filter(User.id==user_id).first()
+        g.token = get_token(g.user.username, g.user.password)
 
 def authenticate(username, password):
-    user = username_table.get(username, None)
+    user = User.query.filter(User.username==username).first()
     if user and safe_str_cmp(user.password.encode('utf-8'), password.encode('utf-8')):
         return user
 
 def identity(payload):
     user_id = payload['identity']
-    return userid_table.get(user_id, None)
+    return User.query.filter(User.id==user_id).first()
 
 def create_user(username,password):
     return User(uuid.UUID,username,password)
@@ -61,9 +57,8 @@ def register():
                        )
         db.session.add(newUser)
         db.session.commit()
-        session['token'] = token
         session['user_id'] = authenticate(input_name,input_password).id
-        flash('Hello new user!')
+        flash('Hello {}!'.format(requests.form['username']))
         return redirect('/')
  
     else:
@@ -84,6 +79,7 @@ def signup():
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
+    session.pop('token', None)
     flash('Log out')
     return redirect('/')
 
@@ -102,3 +98,8 @@ def authorize():
     else:
         flash('Login failed')
         return redirect('/login')
+
+@app.route('/user/<int:user_id>/edit')
+def user_edit(user_id):
+    return 'edit user ' + str(user_id)
+

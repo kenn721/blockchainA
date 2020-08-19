@@ -1,10 +1,10 @@
 # BlockChain 課題A
 
-This is baased on [https://github.com/satwikkansal/python_blockchain_app](https://github.com/satwikkansal/python_blockchain_app)
+クローン元のファイル [https://github.com/satwikkansal/python_blockchain_app](https://github.com/satwikkansal/python_blockchain_app)
 
 ## Instructions to run (Mac環境で確認済み)
 
-Clone the project, or Download as zip
+クローンするかzipファイルをダウンロードし、/blockchainAに入る
 
 ```sh
 $ git clone git@github.com:kenn721/blockchainA.git
@@ -12,6 +12,7 @@ $ cd blockchainA
 ```
 
 Docker環境の構築(Docker for Macの準備が必要　[参考](https://docs.docker.jp/docker-for-mac/install.html))
+
 開発サーバーでしかないので、取引データ、マイニングなどはサーバーをストップするたびにリセットされる
 
 ```sh
@@ -23,7 +24,7 @@ Dockerを起動して、blockchain node serverを開始する,
 $ docker-compose up -d
 ``` 
 
-One instance of our blockchain node is now up and running at port 8000.
+blockchain node serverは port 8000に起動する
 
 起動したDockerコンテナに入り、 (/srcに入ります)アプリケーションサーバーを起動
 
@@ -32,7 +33,7 @@ $ docker-compose exec flask bash
 $ python run_app.py
 ```
 
-The application should be up and running at [http://localhost:5000](http://localhost:5000).
+アプリケーションサーバーは [http://localhost:5000](http://localhost:5000)　で起動します
 
 Here are a few screenshots
 

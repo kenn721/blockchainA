@@ -6,41 +6,23 @@
 
 	{% if user %}
 
-	<div>ログインユーザー：<a  href="/user/{{ user.id }}">{{ user.username }}</a></div>
-
 	<center>
-	<div>質問項目、金額（最低100円）を設定</div>
-	<form action="/post_submit" id="textform" method="post">
-		<input type="text" name="title" placeholder="Title">
-		<input type="number" min="100" name="money" placeholder="pay money">
-		<input type="submit" value="Post">
-		<br>
+	<form action="/posts/{{ post_id }}/add_answer" id="textform" method="post">
 	    <textarea name="content" rows="4" cols="50" placeholder="Just write whatever you want to..."></textarea>
+	    <br>
+	    <input type="submit" value="Post">
 	</form>
 	</center>
 
 	<br>
 
-	<a href="{{node_address}}/mine" target="_blank"><button>Request to mine</button></a>
-	<a href="/"><button>Resync</button></a>
+	{% else %}
+
+	<div> Please Log in to add comment </div>
 
 	{% endif %}
 
 	<div style="margin: 20px;">
-
-    {% for post in posts %}
-    <div class="post_box">
-	   <div class="post_box-header">
-	      <div class="post_box-options"><button class="option-btn"><a href="/posts/{{ post.id }}/create_answer"> Add Answer</a></button></div>
-	      <div style="background: rgb(0, 97, 146) none repeat scroll 0% 0%; box-shadow: rgb(0, 97, 146) 0px 0px 0px 2px;" class="post_box-avatar">{{post.author[0]}}</div>
-		  <div class="name-header">投稿者:<a href='/user/{{ post.author_id }}'>{{ post.author }}</a></div>
-		  <div class="name-header">Title:<a href='/posts/{{ post.id }}'>{{post.title}}</a></div>
-		  <div class="name-header">報酬：{{post.money}}円</div>
-		  <div class="post_box-subtitle"> Posted at <i>{{readable_time(post.timestamp)}}</i></div>
-		  <div class="post_box-subtitle"><a href='/posts/{{ post.id }}/answers'>answers</a></div>
-	   </div>
-	</div>
-	{% endfor %}
 
 	<style>
 		.post_box {
