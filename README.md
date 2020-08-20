@@ -37,43 +37,43 @@ $ python run_app.py
 アプリケーションサーバーは [http://localhost:5000](http://localhost:5000)　で起動します
 
 ER図
-![image.png](https://github.com/kenn721/blockchainA/tree/master/screenshots/ER図.png)
+![image.png](https://github.com/kenn721/blockchainA/blob/master/screenshots/ER図.png)
 
 Here are a few screenshots
 
 1. 非ログイン時ホーム
 
-![image.png](https://github.com/kenn721/blockchainA/tree/master/screenshots/1.png)
+![image.png](https://github.com/kenn721/blockchainA/blob/master/screenshots/1.png)
 投稿一覧は見れるが回答はできない、投稿することもできない
 ログイン、サインアップができる
 
 2. ログイン、サインアップ
 
-![image.png](https://github.com/kenn721/blockchainA/tree/master/screenshots/2.png)
+![image.png](https://github.com/kenn721/blockchainA/blob/master/screenshots/2.png)
 ユーザーネーム、パスワードでログイン
 サインアップ時はユーザーネームがすでにいるユーザーとかぶらないようにする
 
 3. ログイン後
 
-![image.png](https://github.com/kenn721/blockchainA/tree/master/screenshots/3.png)
+![image.png](https://github.com/kenn721/blockchainA/blob/master/screenshots/3.png)
 投稿一覧が見れる、解答を追加することができる、投稿をすることができる
 マイニング、ブロックチェーンとの同期を行える
 マイニングをクリックするとこれまでの取引データが保存され、同期するとブロックチェーンの最新状態が反映される
 
 4.　投稿、マイニング、同期
 
-![image.png](https://github.com/kenn721/blockchainA/tree/master/screenshots/4.png)
+![image.png](https://github.com/kenn721/blockchainA/blob/master/screenshots/4.png)
 投稿した後、request to mine を押すと上記画面へ遷移する
 この後resyncを押すと最新状況にアップデートされる
 
 5.　解答追加
 
-![image.png](https://github.com/kenn721/blockchainA/tree/master/screenshots/5.png)
+![image.png](https://github.com/kenn721/blockchainA/blob/master/screenshots/5.png)
 質問に対しての解答ファイルを追加、送信する→ブロックチェーンに追加されるトランザクションデータになる
 
 6.ユーザーページ
 
-![image.png](https://github.com/kenn721/blockchainA/tree/master/screenshots/6.png)
+![image.png](https://github.com/kenn721/blockchainA/blob/master/screenshots/6.png)
 過去の質問投稿履歴、解答の履歴とそれに対しての評価の履歴が追加される
 
 <!-- To play around by spinning off multiple custom nodes, use the `register_with/` endpoint to register a new node. 
