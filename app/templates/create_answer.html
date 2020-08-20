@@ -7,9 +7,13 @@
 	{% if user %}
 
 	<center>
-	<form action="/posts/{{ post_id }}/add_answer" id="textform" method="post">
-	    <textarea name="content" rows="4" cols="50" placeholder="Just write whatever you want to..."></textarea>
-	    <br>
+	<form action="/posts/{{ post_id }}/add_answer" id="textform" method="post" enctype = "multipart/form-data">
+	    <!-- <textarea name="content" rows="4" cols="50" placeholder="Just write whatever you want to..."></textarea>
+		<br> -->
+		<input type="text" name = "title" placeholder="Title">
+		<div>回答ファイルを選択してください</div>
+		<input type="file" name = "content">
+		<br>
 	    <input type="submit" value="Post">
 	</form>
 	</center>

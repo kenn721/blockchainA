@@ -1,9 +1,10 @@
+import os
 import datetime
 import json
 import uuid
 
 import requests
-from flask import render_template, redirect, request, session ,g
+from flask import render_template, redirect, request, session ,g, flash, send_from_directory
 from flask_jwt import jwt_required, current_identity, _jwt
 
 from app import app
@@ -13,6 +14,9 @@ from app.models.users import User
 # such nodes as well.
 CONNECTED_NODE_ADDRESS = "http://127.0.0.1:8000"
 APP_ADDRESS = 'http://127.0.0.1:5000'
+
+# アップロードされる拡張子の制限
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'gif'])
 
 posts = []
 answers = []
@@ -111,32 +115,42 @@ def post_detail(post_id):
                            author=post['author'])
 
 @app.route('/post_submit', methods=['POST'])
-def submit_textarea():
+def post_submit():
     """
     Endpoint to create a new transaction via our application.
     """
-    post_content = request.form["content"]
+    post_content = request.files["content"]
     title = request.form["title"]
     money = request.form["money"]
+    if post_content.filename == '':
+            flash('ファイルがありません')
+            return redirect(request.url)
+    if post_content and allwed_file(post_content.filename):
+            # ファイルの保存
+            post_content_path = os.path.join(app.config['UPLOAD_FOLDER'], post_content.filename)
+            post_content.save(post_content_path)
 
-    post_object = {
-        'id': str(uuid.uuid4()),
-        'author': g.user.username,
-        'author_id': g.user.id,
-        'title': title,
-        'content': post_content,
-        'money': money,
-        'type': 'post',
-    }
+            post_object = {
+                'id': str(uuid.uuid4()),
+                'author': g.user.username,
+                'author_id': g.user.id,
+                'title': title,
+                'content': post_content_path,
+                'money': money,
+                'type': 'post',
+            }
 
-    # Submit a transaction
-    new_tx_address = "{}/new_transaction".format(CONNECTED_NODE_ADDRESS)
+            # Submit a transaction
+            new_tx_address = "{}/new_transaction".format(CONNECTED_NODE_ADDRESS)
 
-    requests.post(new_tx_address,
-                  json=post_object,
-                  headers={'Content-type': 'application/json'})
-
-    return redirect('/')
+            requests.post(new_tx_address,
+                        json=post_object,
+                        headers={'Content-type': 'application/json'})
+            flash('Upload success')
+            return redirect('/')
+    else:
+        flash('Upload failed')
+        return redirect('/')
 
 @app.route('/posts/<string:post_id>/create_answer')
 def create_answer(post_id):
@@ -194,26 +208,37 @@ def answer_detail(post_id,answer_id):
 
 @app.route('/posts/<string:post_id>/add_answer', methods=['POST'])
 def add_answer(post_id):
-    content = request.form["content"]
+    content = request.files["content"]
+    title = request.form["title"]
+    if content.filename == '':
+        flash('ファイルがありません')
+        return redirect(request.url)
+    if content and allwed_file(content.filename):
+        # ファイルの保存
+        post_content_path = os.path.join(app.config['UPLOAD_FOLDER'], content.filename)
+        content.save(post_content_path)
 
-    post_object = { 
-        'id': str(uuid.uuid4()),
-        'title': 'answer',
-        'content':content,
-        'author':g.user.username,
-        'author_id': g.user.id,
-        'post_id': post_id,
-        'type': 'answer',
-    }
+        post_object = { 
+            'id': str(uuid.uuid4()),
+            'title': title,
+            'content':post_content_path,
+            'author':g.user.username,
+            'author_id': g.user.id,
+            'post_id': post_id,
+            'type': 'answer',
+        }
 
-    # Submit a transaction
-    new_tx_address = "{}/new_transaction".format(CONNECTED_NODE_ADDRESS)
+        # Submit a transaction
+        new_tx_address = "{}/new_transaction".format(CONNECTED_NODE_ADDRESS)
 
-    requests.post(new_tx_address,
-                  json=post_object,
-                  headers={'Content-type': 'application/json'})
-
-    return redirect('/posts/{}'.format(post_id))
+        requests.post(new_tx_address,
+                    json=post_object,
+                    headers={'Content-type': 'application/json'})
+        flash('Upload success')
+        return redirect('/posts/{}'.format(post_id))
+    else:
+        flash('Upload failed')
+        return redirect('/posts/{}'.format(post_id))
 
 @app.route('/posts/<string:post_id>/<string:answer_id>/create_review',methods=['POST'])
 def create_review(post_id, answer_id):
@@ -246,6 +271,14 @@ def create_review(post_id, answer_id):
 
     return redirect('/posts/{}/answers'.format(post_id))
 
+@app.route('/uploads/<path:filepath>')
+def img_path(filepath):
+    return send_from_directory('../uploads', filepath)
 
 def timestamp_to_string(epoch_time):
     return datetime.datetime.fromtimestamp(epoch_time).strftime('%H:%M')
+
+def allwed_file(filename):
+    # .があるかどうかのチェックと、拡張子の確認
+    # OKなら１、だめなら0
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS

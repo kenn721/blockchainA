@@ -10,12 +10,15 @@
 
 	<center>
 	<div>質問項目、金額（最低100円）を設定</div>
-	<form action="/post_submit" id="textform" method="post">
+	<form action="/post_submit" id="textform" method="post" enctype = "multipart/form-data">
 		<input type="text" name="title" placeholder="Title">
 		<input type="number" min="100" name="money" placeholder="pay money">
-		<input type="submit" value="Post">
 		<br>
-	    <textarea name="content" rows="4" cols="50" placeholder="Just write whatever you want to..."></textarea>
+		<div>質問内容について画像ファイルを選択</div>
+		<input type="file" name = "content">
+		<br>
+		<input type="submit" value="Post">
+	    <!-- <textarea name="content" rows="4" cols="50" placeholder="Just write whatever you want to..."></textarea> -->
 	</form>
 	</center>
 
@@ -31,8 +34,10 @@
     {% for post in posts %}
     <div class="post_box">
 	   <div class="post_box-header">
+		  {% if user %}
 	      <div class="post_box-options"><button class="option-btn"><a href="/posts/{{ post.id }}/create_answer"> Add Answer</a></button></div>
-	      <div style="background: rgb(0, 97, 146) none repeat scroll 0% 0%; box-shadow: rgb(0, 97, 146) 0px 0px 0px 2px;" class="post_box-avatar">{{post.author[0]}}</div>
+		  {% endif %} 
+		  <div style="background: rgb(0, 97, 146) none repeat scroll 0% 0%; box-shadow: rgb(0, 97, 146) 0px 0px 0px 2px;" class="post_box-avatar">{{post.author[0]}}</div>
 		  <div class="name-header">投稿者:<a href='/user/{{ post.author_id }}'>{{ post.author }}</a></div>
 		  <div class="name-header">Title:<a href='/posts/{{ post.id }}'>{{post.title}}</a></div>
 		  <div class="name-header">報酬：{{post.money}}円</div>

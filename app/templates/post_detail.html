@@ -5,9 +5,12 @@
     <br>
     
 	<center>
-        {{ content }}
+		<p>Titile {{ title }}</p>
+		<p>質問内容</p>
+		<div>by {{author}}</div>
+		<img src="/{{ content }}" width="50%" height="50%">
 	</center>
-    <div>{{author}}</div>
+    
 	<br>
 
 	<div><a href="/posts/{{ post_id }}/create_answer">Add Answer</a></div>

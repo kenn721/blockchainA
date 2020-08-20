@@ -52,13 +52,15 @@ def protected():
 @app.route('/register', methods=['POST'])
 def register():
     if request.form['username'] and request.form['password']:
-        newUser = User(username=request.form['username'],
-                       password=request.form['password'],
+        username = request.form['username']
+        password = request.form['password']
+        newUser = User(username=username,
+                       password=password,
                        )
         db.session.add(newUser)
         db.session.commit()
-        session['user_id'] = authenticate(input_name,input_password).id
-        flash('Hello {}!'.format(requests.form['username']))
+        session['user_id'] = authenticate(username,password).id
+        flash('Hello {}!'.format(request.form['username']))
         return redirect('/')
  
     else:
